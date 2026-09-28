@@ -204,7 +204,7 @@ data object SCREENSAVER_TYPE : EnumByTitlePref<ScreenSaverType>(ScreenSaverType.
 }
 
 // home screen channels
-data object ENABLE_HOME_SCREEN_CHANNELS : BooleanPref(true,
+data object ENABLE_HOME_SCREEN_CHANNELS : BooleanPref(false,
     ImmichApplication.appContext!!.getString(R.string.enable_home_screen_channels),
     ImmichApplication.appContext!!.getString(R.string.enable_home_screen_channels_desc))
 

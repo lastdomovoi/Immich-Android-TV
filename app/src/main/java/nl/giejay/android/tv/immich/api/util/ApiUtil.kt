@@ -4,7 +4,6 @@ import arrow.core.Either
 import com.google.gson.Gson
 import nl.giejay.android.tv.immich.api.model.ImmichErrorResponse
 import nl.giejay.android.tv.immich.api.model.toDisplayMessage
-import nl.giejay.android.tv.immich.shared.prefs.API_KEY
 import nl.giejay.android.tv.immich.shared.prefs.HOST_NAME
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import retrofit2.HttpException
@@ -14,12 +13,9 @@ import java.util.UUID
 
 object ApiUtil {
 
-    fun getThumbnailUrl(assetId: String?, format: String, loadEdited: Boolean = false, includeApiKey: Boolean = false): String? {
+    fun getThumbnailUrl(assetId: String?, format: String, loadEdited: Boolean = false): String? {
         return assetId?.let {
-            val base = "${hostName().lowercase()}/api/assets/${it}/thumbnail?size=${format}&edited=${loadEdited}"
-            // api key is added here for home screen channel poster art, since the launcher fetches it
-            // in its own process, without our OkHttp interceptor
-            if (includeApiKey) "${base}&apiKey=${PreferenceManager.get(API_KEY)}" else base
+            "${hostName().lowercase()}/api/assets/${it}/thumbnail?size=${format}&edited=${loadEdited}"
         }
     }
 
@@ -30,15 +26,13 @@ object ApiUtil {
     fun getFileUrl(assetId: String?, type: String, forceOriginal: Boolean = false, loadEdited: Boolean = false): String? {
         if(forceOriginal){
             return assetId?.let {
-                // api key is added here if the user wants to open a video in an external video player, since the external player will not have access to the api key otherwise
-                "${hostName().lowercase()}/api/assets/${it}/original?apiKey=${PreferenceManager.get(API_KEY)}"
+                "${hostName().lowercase()}/api/assets/${it}/original"
             }
         }
         return when (type) {
             "VIDEO" ->
                 assetId?.let {
-                    // api key is added here if the user wants to open a video in an external video player, since the external player will not have access to the api key otherwise
-                    "${hostName().lowercase()}/api/assets/${it}/video/playback?apiKey=${PreferenceManager.get(API_KEY)}"
+                    "${hostName().lowercase()}/api/assets/${it}/video/playback"
                 }
 
             else ->

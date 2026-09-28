@@ -15,7 +15,8 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">Immich TV</string>
+    <string name="secure_storage_unavailable">Android secure storage is unavailable. API key was not saved.</string>
+    <string name="app_name" translatable="false">Immich TV Private Pilot</string>
 
     <!-- Strings for the "No Firebase" screen -->
     <string name="no_firebase_title">Firebase not configured</string>

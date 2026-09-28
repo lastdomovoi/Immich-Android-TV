@@ -72,7 +72,7 @@ class ScreenSlidePagerAdapter(private val context: Context,
             view.setupPlayer(config, AmlogicSafeRenderersFactory(context), exoPlayerListener) { player, error ->
                 val shouldRetry = !useTextureView && !failedPositions.contains(model.url)
                 Timber.e(error,
-                    "Player error at position $position for url ${model.url}. Already failed: ${failedPositions.contains(model.url)}." +
+                    "Player error at position $position. Already failed: ${failedPositions.contains(model.url)}." +
                             "Should retry: $shouldRetry. " +
                             "Current index: ${currentIndex()}. " +
                             "Did use texture view: ${useTextureView}. Error: ${error.message}")

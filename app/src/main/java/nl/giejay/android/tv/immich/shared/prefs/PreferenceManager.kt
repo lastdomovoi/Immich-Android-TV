@@ -14,7 +14,6 @@ import nl.giejay.mediaslider.adapter.MetaDataMediaCount
 import nl.giejay.mediaslider.adapter.MetaDataSliderItem
 import nl.giejay.mediaslider.model.MetaDataType
 import nl.giejay.mediaslider.plugin.DateOverlayViewPlugin
-import nl.giejay.mediaslider.plugin.ExternalPlayerButtonControllerPlugin
 import nl.giejay.mediaslider.plugin.MediaRemoteControlsKeyEventPlugin
 import nl.giejay.mediaslider.plugin.MetadataViewPlugin
 import nl.giejay.mediaslider.plugin.SliderControllerPlugin
@@ -50,7 +49,7 @@ object PreferenceManager {
     fun init(context: Context) {
         sharedPreference = PreferenceManager.getDefaultSharedPreferences(context)
         liveSharedPreferences = LiveSharedPreferences(sharedPreference)
-        migrateApiKeyIfNeeded()
+        rejectPlaintextApiKeyIfNeeded()
         subclasses(Pref::class).filter { it.objectInstance != null }.forEach { pref ->
             val prefInstance = pref.objectInstance!! as Pref<Any, *, *>
             liveSharedPreferences.subscribeTyped(prefInstance) { typeValue ->
@@ -59,12 +58,11 @@ object PreferenceManager {
         }
     }
 
-    // one-time, before the subscription loop below reads it: re-save a legacy-plaintext or
-    // previously-unencryptable API key now that ApiKeyCipher can (re)try encrypting it
-    private fun migrateApiKeyIfNeeded() {
+    // This fork uses a separate package ID, so any plaintext value is unexpected.
+    private fun rejectPlaintextApiKeyIfNeeded() {
         val raw = sharedPreference.getString(API_KEY.key(), "") ?: return
         if (raw.isNotEmpty() && !ApiKeyCipher.isEncrypted(raw)) {
-            API_KEY.save(sharedPreference, ApiKeyCipher.decryptOrAdoptLegacy(raw))
+            API_KEY.save(sharedPreference, "")
         }
     }
 
@@ -77,8 +75,8 @@ object PreferenceManager {
         get() = get(HOST_NAME).replace("\\s".toRegex(), "").removeSuffix("/")
 
     fun <T, PREFTYPE> save(key: Pref<T, *, PREFTYPE>, value: T) {
-        liveContext[key.key()] = value
         key.save(sharedPreference, value)
+        liveContext[key.key()] = value
     }
 
     fun <T> subscribe(key: Pref<T, *, *>, onChange: (T) -> Unit) {
@@ -199,7 +197,6 @@ object PreferenceManager {
         return EnabledSliderPlugins(
             controllerPlugins = listOf(
                 FavoriteButtonControllerPlugin(favoriteService, scope),
-                ExternalPlayerButtonControllerPlugin(),
                 metadataPlugin
             ),
             viewPlugins = listOf(metadataPlugin, DateOverlayViewPlugin()),

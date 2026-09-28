@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <string name="secure_storage_unavailable">Защищённое хранилище Android недоступно. API-ключ не сохранён.</string>
 
 
     <!-- Strings for the "No Firebase" screen -->

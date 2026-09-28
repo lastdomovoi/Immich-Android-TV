@@ -293,7 +293,7 @@ object HomeScreenChannelManager {
      * Diffs [assets] against the programs the provider currently has for [channelId] - not just
      * our local state - so a card the user removed (browsable-disabled) or a whole channel the
      * user cleared out is respected rather than silently overwritten. Assets already present are
-     * updated in place (poster art URL - and the API key embedded in it - title, and weight can
+     * updated in place (poster art URL, title, and weight can
      * all change between syncs), not just left stale.
      */
     private fun syncProgramsForChannel(context: Context, channelInternalId: String, channelId: Long, assets: List<Asset>) {
@@ -318,7 +318,7 @@ object HomeScreenChannelManager {
             if (asset.id !in targetAssetIds) {
                 return@forEachIndexed
             }
-            val posterArtUrl = ApiUtil.getThumbnailUrl(asset.id, "preview", includeApiKey = true) ?: return@forEachIndexed
+            val posterArtUrl = ApiUtil.getThumbnailUrl(asset.id, "preview") ?: return@forEachIndexed
             val program = PreviewProgram.Builder()
                 .setChannelId(channelId)
                 .setType(TvContractCompat.PreviewPrograms.TYPE_CLIP)

@@ -1,5 +1,9 @@
 # Immich Android TV
 
+> Private pilot fork based on upstream commit `fc7d773d6dd164978d32e203b25c7056473e54ae`.
+> It uses a separate Android package ID. See [PRIVATE_PILOT.md](PRIVATE_PILOT.md)
+> for the security changes and current test status.
+
 Immich is a self hosted backup solution for photos and videos. Current features include:
 
 - Upload and view videos and photos
@@ -23,9 +27,9 @@ include:
 
 | Features                                                                       | Status       |
 |:-------------------------------------------------------------------------------|--------------|
-| Sign in by phone (https://github.com/giejay/Immich-Android-TV-Authentication)  | Done         |
+| Sign in by phone                                                                | Disabled in this fork |
 | Sign in by entering API key                                                    | Done         |
-| Demo environment                                                               | Done         |
+| Demo environment                                                               | Disabled in this fork |
 | Album fetching + Lazy loading                                                  | Done         |
 | Showing the photos inside an album                                             | Done         |
 | Showing people, random, recent or seasonal photos                              | Done         |
@@ -78,12 +82,9 @@ When setting up your API key in Immich, make sure to grant the following permiss
 
 ## Build steps
 
-1. Clone project with `git clone --recurse git@github.com:giejay/Immich-Android-TV.git`
-2. Create an account at firebase and create a google-services.json file, or
-   `cp app/google-services.example app/google-services.json`
-3. copy app/strings_other.xml.example to app/src/main/res/values/strings_other.xml and modify
-   the address and API keys for your demo server.
-4. Build apk with `./gradlew assembleRelease`
+1. Clone this fork.
+2. Build the debug APK with `./gradlew assembleDebug testDebugUnitTest` using the Android SDK and JDK 17.
+3. For a stable release APK, sign it with a private keystore. Never commit the keystore or an Immich API key.
 
 ## Support the project
 
