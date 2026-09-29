@@ -13,8 +13,8 @@ android {
         applicationId "org.lastdomovoi.immichtv.private"
         minSdkVersion 24
         targetSdkVersion 37
-        versionCode 147
-        versionName "6.1.0"
+        versionCode 148
+        versionName "6.1.0-private.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testOptions.unitTests.includeAndroidResources = true
