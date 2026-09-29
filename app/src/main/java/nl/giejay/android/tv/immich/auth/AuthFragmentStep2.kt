@@ -22,7 +22,7 @@ import nl.giejay.android.tv.immich.shared.prefs.SCREENSAVER_ALBUMS
 import timber.log.Timber
 
 
-data class AuthSettings(val hostName: String, val apiKey: String) {
+class AuthSettings(val hostName: String, val apiKey: String) {
     fun isValid(): Boolean {
         return PreferenceManager.isValid(hostName, apiKey)
     }

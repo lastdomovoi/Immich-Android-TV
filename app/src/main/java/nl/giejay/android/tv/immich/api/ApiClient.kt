@@ -45,6 +45,8 @@ data class ApiClientConfig(
     val disableSslVerification: Boolean,
     val debugMode: Boolean
 ) {
+    override fun toString(): String = "ApiClientConfig(hostName=$hostName, API key redacted)"
+
     companion object {
         fun fromPrefs(): ApiClientConfig = ApiClientConfig(
             PreferenceManager.hostName,
